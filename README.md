@@ -1,2 +1,12 @@
 # todoapp
-Aplicação desenvolvida com leme JS e disponibilizada como amostra para avaliação em possíveis contratações para cargos de desenvolvimento front end
+
+Aplicação desenvolvida com LemeJS, biblioteca de minha autoria.
+
+# PROCESSOS SELETIVOS
+
+Disponibilizo publicamente esse projeto para que possíveis contratantes
+possam avaliar meus conhecimentos em desenvolvimento front end.
+
+# DOCUMENTAÇÃO
+
+A documentação da biblioteca está disponível aqui: https://to-codando.github.io/leme-js-doc
