@@ -39,6 +39,7 @@
     "cross-env": "^7.0.2",
     "esbuild": "^0.12.17",
     "precise-watcher": "^1.0.1",
+	"http-server": "^14.1.0",
     "shx": "^0.3.2"
   },
   "dependencies": {
