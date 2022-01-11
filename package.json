@@ -1,0 +1,47 @@
+{
+  "name": "lemeJs-bootstrap-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.js",
+  "module": "src/main.js",
+  "precise-watcher": {
+    "src": [
+      {
+        "pattern": [
+          "./src/**/*"
+        ],
+        "run": [
+          {
+            "cmd": "yarn",
+            "args": [
+              "dev"
+            ],
+            "callNext": "parallel"
+          }
+        ]
+      }
+    ]
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "cross-env NODE_ENV=development node ./esbuild.config.js",
+    "predev": "shx rm -rf dist/**/*",
+    "postdev": "shx cp ./index.html ./dist/index.html",
+    "build": "cross-env NODE_ENV=production node ./esbuild.config.js",
+    "prebuild": "shx rm -rf dist/**/*",
+    "postbuild": "shx cp ./index.html ./dist/index.html",
+    "serve": "yarn dev & yarn precise-watcher & npx http-server dist"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cross-env": "^7.0.2",
+    "esbuild": "^0.12.17",
+    "precise-watcher": "^1.0.1",
+    "shx": "^0.3.2"
+  },
+  "dependencies": {
+    "lemejs": "^5.2.2"
+  }
+}
