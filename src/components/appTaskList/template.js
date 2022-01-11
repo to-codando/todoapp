@@ -42,11 +42,7 @@ export default ({ state, html }) => {
             </div>            
             `
         }).join('')}
-        
-           
-            
-
-           
+         
         </div>
     `
 }

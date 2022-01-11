@@ -1,5 +1,4 @@
-import bannerLemeJs from '../../assets/images/leme-js-banner.png'
-export default ({ state, html }) => {
+export default ({ state, html }) => { 
 
 	const renderPopup = (condition, template) => {
         if(condition) return template
@@ -17,8 +16,9 @@ export default ({ state, html }) => {
             ${renderPopup(state.popupOptions.isVisible, html`
                 <app-popup 
 					data-id="${state?.popupOptions?.data?.id}"
-                    data-template="${state.popupOptions.template}" 
-                    data-event-name="${state.popupOptions.eventName}"
+					data-project-id="${state?.popupOptions?.data?.projectId}"
+                    data-template="${state?.popupOptions?.template}" 
+                    data-event-name="${state?.popupOptions?.eventName}"
 					data-title="${state?.popupOptions?.data?.title}"
 					data-input-value="${state?.popupOptions?.data?.inputValue}"
 					data-textarea-value="${state?.popupOptions?.data?.textareaValue}"

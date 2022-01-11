@@ -24,7 +24,10 @@ export const appTaskList = () => {
 
 	const hooks = ({ methods }) => ({
 		beforeOnInit() {
-			methods.setTasksByProjectId()
+			methods.setTasksByProjectId()	
+			store.on('updateTask', methods.resetTasksWhenStoreChanges)		
+			store.on('addTask', methods.resetTasksWhenStoreChanges)		
+			popupEventDrive.on('on-popup-success', methods.updateTaskList)
 		}
 	})
 
@@ -47,16 +50,33 @@ export const appTaskList = () => {
 		}
 	})
 
-	const methods = () => ({
+	const methods = ({ publicMethods }) => ({
+		sortById  (a, b) {
+			return a.id - b.id
+		},
+		resetTasksWhenStoreChanges(payload) { 
+			const { projects } = payload
+			const { routeParams } = routerObservable.get()
+			const selectedProject = projects.find( project => project.id === +routeParams.id)
+			const tasks = Array.from(selectedProject.tasks).sort(publicMethods.sortById)
+
+			state.set({ tasks })
+		},
+		updateTaskList (payload) {
+			const { eventName, data } = payload
+			store.emit(eventName, data)
+		},
 		editTask() {
-			
+
+			const { routeParams } = routerObservable.get()
+			const { id: projectId } = routeParams
 			const { selectedTaskId } = state.get()
 			const { tasks } = state.get()
 			const selectedTask = tasks.find( task => +task.id === +selectedTaskId)
 			const {title: inputValue, description: textareaValue, id} = selectedTask
 			const title = 'Cadastro de tarefas'
-			const data =  { id, title, inputValue, textareaValue }
-			const options = { eventName: 'editTask', template:'task', isVisible: true, data }
+			const data =  { id, projectId, title, inputValue, textareaValue }
+			const options = { eventName: 'updateTask', template:'task', isVisible: true, data }
 
 		    popupEventDrive.emit('on-show-popup', options)
 		},
@@ -70,7 +90,8 @@ export const appTaskList = () => {
 			if(projectId) {
 				const { projects } = store.getState()
 				const selectedProject = projects.find(project => +project.id === +projectId)
-				state.set({ tasks: selectedProject.tasks  })
+				const tasks = selectedProject.tasks
+				state.set({ tasks: tasks.sort(publicMethods.sortById)  })
 			}
 		},
 		setSelectedTask(target) {

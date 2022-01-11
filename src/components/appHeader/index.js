@@ -1,11 +1,11 @@
 import { observableFactory, routerObservable } from 'lemejs';
-import { toggleProjectPopup, toggleTaskPopup } from '../../services/popupObservable';
 
 import template from './template'
 import styles from './styles'
 
 import { appBreadCrumbs } from '../appBreadCrumbs';
 import { appPopup, popupEventDrive } from '../appPopup';
+import { uuid } from '../../services/uuid';
 
 
 export const appHeader = () => {
@@ -17,6 +17,7 @@ export const appHeader = () => {
 			eventName: '',
 			data: {
 				id:'',
+				projectId:'',
 				title:'',
 				inpuValue:'',
 				textareaValue:''
@@ -44,12 +45,27 @@ export const appHeader = () => {
 			on('click', buttonShowPopup, () => {
 				const isVisible = true
 				const { routeParams } = routerObservable.get()
-				const title = routeParams.hasOwnProperty('id') ? 'Cadastro de tarefas' : 'Cadastro de projetos'
-				const template = routeParams.hasOwnProperty('id') ? 'task' : 'project'
-				const eventName = routeParams.hasOwnProperty('id') ? 'addTask' : 'addProject'
-				const data = { inputValue:'' ,	textareaValue:'', title }
+
+				
+				if(routeParams.hasOwnProperty('id')) {
+					const title = 'Cadastro de tarefas' 
+					const template = 'task'
+					const eventName = 'addTask'
+					const projectId = +routeParams.id
+					const data = { inputValue:'', textareaValue:'', title, projectId  }
+					const options = { eventName, template, isVisible, data }
+					methods.showPopup(options)
+					return
+				}
+
+				const title = 'Cadastro de projetos' 
+				const template = 'project'
+				const eventName = 'addProject'
+
+				const data = { inputValue:'', textareaValue:'', title  }
 				const options = { eventName, template, isVisible, data }
-				methods.showPopup(options)
+				methods.showPopup(options)				
+
 			})
 		}
 	})

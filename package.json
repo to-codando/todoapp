@@ -43,6 +43,6 @@
     "shx": "^0.3.2"
   },
   "dependencies": {
-    "lemejs": "^5.2.2"
+    "lemejs": "^5.2.3"
   }
 }
