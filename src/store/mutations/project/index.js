@@ -10,6 +10,7 @@ const addProject = (state, payload) => {
 	}
 }
 
+
 const addTask = (state, payload) => {
 	const { projectId, inputValue: title, textareaValue: description } = payload
 	const newTask = { title, description, id: uuid() }
