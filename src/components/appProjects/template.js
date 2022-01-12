@@ -15,6 +15,10 @@ export default ({ state, html }) => {
         }).join('')
     }
 
+	const renderPopup = (condition, template) => {
+        if(condition) return template
+    }	
+
 
     return html`
         <div class="filter-area">
@@ -49,8 +53,11 @@ export default ({ state, html }) => {
                     `)}
                 </ul>        
             `)}
-
         </div>
+
+		${renderPopup(state.popupOptions.isVisible, html`
+			<app-popup-project></app-popup-project>
+		`)}		
     `
 }
 

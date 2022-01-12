@@ -1,66 +1,69 @@
-import { observableFactory } from 'lemejs';
+import { observableFactory, pubsubFactory } from 'lemejs';
 
 import template from './template'
 import styles from './styles'
 
 import { appNote } from '../appNote';
 import { appSearch } from '../appSearch';
-import { popupEventDrive } from '../appPopup';
+import { appPopupProject } from '../appPopupProject'
 
 
 import { store } from '../../store';
-import { uuid } from '../../services/uuid';
+
 
 export const appProjects = () => {
 
-  const state = observableFactory({
-    projects: [],
-    title: 'Componente de projetos',
-  })
+	const state = observableFactory({
+		projects: store.getState().projects,
+		popupOptions: {
+			isVisible: false,
+			template: '',
+			eventName: '',
+			data: {
+				id:'',
+				projectId:'',
+				title:'',
+				inpuValue:'',
+				textareaValue:''
+			}
+		},
+	})
 
-  const hooks = ({ methods }) => ({
-    beforeOnInit () {
-		methods.setProjects()
+	const hooks = ({ methods }) => ({ 
+		beforeOnInit () {
+			store.onUpdated((payload) => {
+				methods.showProjectPopup(payload)
+				methods.setProjectList(payload)
+			})
+		}
+	})
 
-		popupEventDrive.on('on-popup-success', methods.addNewProject)
+	const children = () => [
+		appNote,
+		appSearch,
+		appPopupProject
+	]
 
-		store.on('addProject', methods.updateProjectList)
-    }
-  })  
+	const events = ({ on, queryOnce, queryAll, methods }) => ({})
 
-  const children = () => [
-    appNote,
-    appSearch
-  ]
+	const methods = ({ publicMethods }) => ({
+		showProjectPopup (payload) {
+			if(!payload.event || payload.event !== 'togglePopupProject') return
+			state.set({ ...payload.projectPopup })
+		},
+		setProjectList (payload) {
+			if(!payload.event || payload.event !== 'createProject') return
+			state.set({	projects: payload.projects })
+		}
+	})
 
-  const events = ({on, queryOnce, queryAll, methods}) => ({})
-
-  const methods = ({ publicMethods }) => ({
-	updateProjectList (payload) {
-		state.set({ ...payload })
-	},
-	addNewProject (payload) { 
-		const { eventName } = payload
-		store.emit(eventName, payload.data)
-	},
-	setProjects() {
-		const { projects } =  store.getState()
-		state.set({
-			projects: projects.sort(publicMethods.sortById)
-		})
-	},
-	sortById  (a, b) {
-		return a.id - b.id
-	},
-   })
-
-  return {
-    state,
-    template,
-    styles,
-    events,
-    methods,
-    children,
-    hooks
-  }
+	return {
+		state,
+		template,
+		styles,
+		events,
+		methods,
+		children,
+		hooks
+	}
 };

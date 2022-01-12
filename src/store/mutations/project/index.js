@@ -1,13 +1,10 @@
 import { uuid } from "../../../services/uuid"
 
-const addProject = (state, payload) => {
+const createProject = (state, payload) => {
 	const id = uuid()
-	const { inputValue: title } = payload
+	const { title } = payload.data
 	const project = { id, title, tasks: []}
-	return {
-		...state,
-		projects: [...state.projects, project]
-	}
+	return {...state, projects: [...state.projects, project], event: payload.event}
 }
 
 
@@ -15,7 +12,6 @@ const addTask = (state, payload) => {
 	const { projectId, inputValue: title, textareaValue: description } = payload
 	const newTask = { title, description, id: uuid() }
 	const project = state.projects.find( project => +project.id === +projectId)
-	console.log('--->', project)
 	project.tasks = [ ...project.tasks, newTask ]
 
 	
@@ -43,8 +39,27 @@ const updateTask = (state, payload) => {
 	   }
 }
 
+const togglePopupProject = (state, payload) => {
+	const projectPopup = {
+		...payload.data
+	}
+	
+	return {
+		...state,
+		projectPopup: {
+			...state.projectPopup,
+			popupOptions: {
+				...state.projectPopup.popupOptions,
+				...projectPopup.popupOptions
+			}
+		},
+		event: payload.event
+	}
+}
+
 export const projectMustations = {
-	addProject,
+	createProject,
 	addTask,
-	updateTask
+	updateTask,
+	togglePopupProject
 }
