@@ -1,28 +1,24 @@
 import { uuid } from "../../../services/uuid"
 
-const addProject = (state, payload) => {
+const createProject = (state, payload) => {
 	const id = uuid()
-	const { inputValue: title } = payload
+	const { title } = payload.data
 	const project = { id, title, tasks: []}
-	return {
-		...state,
-		projects: [...state.projects, project]
-	}
+	return {...state, projects: [...state.projects, project], event: payload.event}
 }
 
 
-const addTask = (state, payload) => {
-	const { projectId, inputValue: title, textareaValue: description } = payload
-	const newTask = { title, description, id: uuid() }
-	const project = state.projects.find( project => +project.id === +projectId)
-	console.log('--->', project)
-	project.tasks = [ ...project.tasks, newTask ]
+const createTask = (state, payload) => {
+	const id = uuid()
+	const { projectId, title, description } = payload.data
+	const task = { id, title, description }
+	const otherProjects = state.projects.filter( project => project.id !== projectId )
+	const project = state.projects.find( project  => project.id === projectId)
 
-	
-	return { 
-		...state, 
-		projects: [ ...state.projects ]
-	}
+	const sortById = (a, b) => a.id - b.id
+	project.tasks = [...project.tasks, task ]
+	const newProjectList = [ ...otherProjects, project ].sort(sortById)
+	return { ...state, projects: newProjectList }
 }
 
 const updateTask = (state, payload) => {
@@ -43,8 +39,46 @@ const updateTask = (state, payload) => {
 	   }
 }
 
+const togglePopupProject = (state, payload) => {
+	const projectPopup = {
+		...payload.data
+	}
+	
+	return {
+		...state,
+		projectPopup: {
+			...state.projectPopup,
+			popupOptions: {
+				...state.projectPopup.popupOptions,
+				...projectPopup.popupOptions
+			}
+		},
+		event: payload.event
+	}
+}
+
+const togglePopupTask = (state, payload) => {
+	const taskPopup = {
+		...payload.data
+	}
+	
+	return {
+		...state,
+		taskPopup: {
+			...state.taskPopup,
+			popupOptions: {
+				...state.taskPopup.popupOptions,
+				...taskPopup.popupOptions
+			}
+		},
+		event: payload.event
+	}
+}
+
 export const projectMustations = {
-	addProject,
-	addTask,
-	updateTask
+	createProject,
+	createTask,
+	updateTask,
+	togglePopupProject,
+	togglePopupTask
 }

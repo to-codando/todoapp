@@ -1,6 +1,33 @@
 export const state = {
+	projectPopup: {
+		popupOptions: {
+			isVisible: false,
+			template: '',
+			eventName: '',
+			data: {
+				id:'',
+				projectId:'',
+				title:'',
+				inpuValue:'',
+				textareaValue:''
+			}
+		},
+	},
+	taskPopup: {
+		popupOptions: {
+			isVisible: false,
+			template: '',
+			eventName: '',
+			data: {
+				id:'',
+				projectId:'',
+				title:'',
+				inpuValue:'',
+				textareaValue:''
+			}
+		},
+	},
 	projects: [
-
 		{id: 1, title: 'Primeiro Projeto', tasks: []},
 		{
 			id: 2, 

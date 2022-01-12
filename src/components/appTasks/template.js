@@ -1,5 +1,8 @@
-import bannerLemeJs from '../../assets/images/leme-js-banner.png'
-export default ({ state, html }) => {
+export default ({ state, html }) => { 
+
+	const renderPopup = (condition, template) => {
+        if(condition) return template
+    }	
 
     return html`
     <div class="filter-area">
@@ -19,6 +22,10 @@ export default ({ state, html }) => {
             <app-task-list></app-task-list>
        </div>
     </div>
+
+	${renderPopup(state.popupOptions.isVisible, html`
+		<app-popup-task></app-popup-task>
+	`)}		
     `
 }
 

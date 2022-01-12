@@ -1,7 +1,7 @@
 
 export default ({ state, html }) => {
 
-    if(!state.tasks.length) return html`
+    if(!state.project.tasks.length) return html`
     <div class="content">
         <app-note
             data-length="0" 
@@ -15,13 +15,13 @@ export default ({ state, html }) => {
     return html`
         <div class="task-list">
 
-        ${state.tasks.map( task => {
+        ${state.project.tasks.map( task => {
             return html`
-            <div class="task-item">
+            <div class="task-item" data-task-id="${task.id}">
                 <div class="task-header">
                     <div class="task-id">#${task.id}</div>
                     <div class="task-title">${task.title}</div>
-                    <div class="task-icon" data-task-id="${task.id}">
+                    <div class="task-icon">
                         <span class="material-icons">
                         expand_more
                         </span>                
