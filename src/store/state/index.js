@@ -1,4 +1,5 @@
 export const state = {
+
 	projectPopup: {
 		popupOptions: {
 			isVisible: false,
@@ -13,6 +14,7 @@ export const state = {
 			}
 		},
 	},
+
 	taskPopup: {
 		popupOptions: {
 			isVisible: false,
@@ -27,6 +29,7 @@ export const state = {
 			}
 		},
 	},
+
 	projects: [
 		{id: 1, title: 'Primeiro Projeto', tasks: []},
 		{
@@ -43,6 +46,6 @@ export const state = {
 		{id: 3, title: 'Terceiro Projeto', tasks: []},
 		{id: 4, title: 'Quarto Projeto', tasks: []},
 		{id: 5, title: 'Quinto Projeto', tasks: []},
-			  
 	]
+	
 }

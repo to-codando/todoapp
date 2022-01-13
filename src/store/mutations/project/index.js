@@ -7,7 +7,6 @@ const createProject = (state, payload) => {
 	return {...state, projects: [...state.projects, project], event: payload.event}
 }
 
-
 const createTask = (state, payload) => {
 	const id = uuid()
 	const { projectId, title, description } = payload.data

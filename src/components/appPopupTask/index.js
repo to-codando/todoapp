@@ -4,7 +4,6 @@ import template from './template'
 import styles from './styles'
 import { store } from '../../store';
 
-
  const popupTaskObserver = observableFactory()
 
 const appPopupTask = (options) => {
