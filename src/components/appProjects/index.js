@@ -17,24 +17,22 @@ export const appProjects = () => {
 		projects: store.getState().projects,
 		popupOptions: {
 			isVisible: false,
-			template: '',
 			eventName: '',
 			data: {
-				id:'',
-				projectId:'',
-				title:'',
-				inpuValue:'',
-				textareaValue:''
+				id: '',
+				projectId: '',
+				title: '',
+				description: ''
 			}
 		},
 	})
 
-	const hooks = ({ methods }) => ({ 
-		beforeOnInit () {
-			store.onUpdated((payload) => {
-				methods.showProjectPopup(payload)
-				methods.setProjectList(payload)
-			})
+	const hooks = ({ methods }) => ({
+		beforeOnInit() {
+			store.onUpdated(methods.togglePopup)
+		},
+		onDestroy() {
+			store.off(methods.togglePopup)
 		}
 	})
 
@@ -47,13 +45,17 @@ export const appProjects = () => {
 	const events = ({ on, queryOnce, queryAll, methods }) => ({})
 
 	const methods = ({ publicMethods }) => ({
-		showProjectPopup (payload) {
-			if(!payload.event || payload.event !== 'togglePopupProject') return
+		togglePopup(payload) {
+			publicMethods.showProjectPopup(payload)
+			publicMethods.setProjectList(payload)
+		},
+		showProjectPopup(payload) {
+			if (!payload.event || payload.event !== 'togglePopupProject') return
 			state.set({ ...payload.projectPopup })
 		},
-		setProjectList (payload) {
-			if(!payload.event || payload.event !== 'createProject') return
-			state.set({	projects: payload.projects })
+		setProjectList(payload) {
+			if (!payload.event || payload.event !== 'createProject') return
+			state.set({ projects: payload.projects })
 		}
 	})
 

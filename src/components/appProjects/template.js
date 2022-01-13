@@ -16,6 +16,7 @@ export default ({ state, html }) => {
     }
 
 	const renderPopup = (condition, template) => {
+		console.log(condition)
         if(condition) return template
     }	
 

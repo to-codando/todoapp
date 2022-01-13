@@ -3,14 +3,11 @@ export const state = {
 	projectPopup: {
 		popupOptions: {
 			isVisible: false,
-			template: '',
 			eventName: '',
 			data: {
 				id:'',
 				projectId:'',
 				title:'',
-				inpuValue:'',
-				textareaValue:''
 			}
 		},
 	},
@@ -18,14 +15,12 @@ export const state = {
 	taskPopup: {
 		popupOptions: {
 			isVisible: false,
-			template: '',
 			eventName: '',
 			data: {
 				id:'',
 				projectId:'',
 				title:'',
-				inpuValue:'',
-				textareaValue:''
+				description:''
 			}
 		},
 	},

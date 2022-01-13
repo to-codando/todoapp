@@ -20,6 +20,30 @@ const createTask = (state, payload) => {
 	return { ...state, projects: newProjectList }
 }
 
+const setIdTaskToEdit = (state, payload) => {
+	const { data, event, selectedTaskId, projectId } = payload
+
+	const project = state.projects.find( project => project.id === projectId) 
+	const task = project.tasks.find( task => task.id === selectedTaskId)
+	
+	const newState = {
+		taskPopup: {
+			popupOptions: {
+				...data.popupOptions,
+				eventName: event,
+				data: {
+					...task,
+					projectId
+				}
+			}			
+		}
+	}
+
+	return { ...state, ...newState }
+
+	
+}
+
 const updateTask = (state, payload) => {
 	
 	const { id: taskId, projectId, inputValue: title, textareaValue: description } = payload
@@ -39,6 +63,7 @@ const updateTask = (state, payload) => {
 }
 
 const togglePopupProject = (state, payload) => {
+
 	const projectPopup = {
 		...payload.data
 	}
@@ -49,7 +74,9 @@ const togglePopupProject = (state, payload) => {
 			...state.projectPopup,
 			popupOptions: {
 				...state.projectPopup.popupOptions,
-				...projectPopup.popupOptions
+				...projectPopup.popupOptions,
+				eventName: payload.event,
+				data: { taskId: '', projectId:'', title:'', description:' '}
 			}
 		},
 		event: payload.event
@@ -79,5 +106,6 @@ export const projectMustations = {
 	createTask,
 	updateTask,
 	togglePopupProject,
-	togglePopupTask
+	togglePopupTask,
+	setIdTaskToEdit
 }

@@ -14,6 +14,7 @@ const appPopupTask = (options) => {
 		title:'',
 		description:'',
 		projectId:'',
+		taskId:'',
 	})
 
 	const children = () => []
@@ -21,6 +22,7 @@ const appPopupTask = (options) => {
 	const hooks = ({ methods, props }) => ({
 		beforeOnInit () {
 			methods.setProjectId()
+			methods.setStateByStaticProps()
 		}
 	 })
 
@@ -48,6 +50,11 @@ const appPopupTask = (options) => {
 	})
 
 	const methods = ({ publicMethods }) => ({
+		setStateByStaticProps() {
+			const { element } = options
+			const popupOptions = JSON.parse(JSON.stringify(element.dataset))
+			state.set({ ...popupOptions })
+		},
 		createTask (){
 			const data = { ...state.get() }
 			const event = 'createTask'

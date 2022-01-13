@@ -11,56 +11,64 @@ import { appPopupTask } from '../appPopupTask';
 
 export const appTasks = () => {
 
-  const state = observableFactory({
-	popupOptions: {
-		isVisible: false,
-		template: '',
-		eventName: '',
-		data: {
-			id:'',
-			projectId:'',
-			title:'',
-			inpuValue:'',
-			textareaValue:''
+	const state = observableFactory({
+		popupOptions: {
+			isVisible: false,
+			template: '',
+			eventName: '',
+			data: {
+				id: '',
+				projectId: '',
+				title: '',
+				description: '',
+			}
+		},
+	})
+
+	const children = () => [
+		appSearch,
+		appFilterStatus,
+		appTaskList,
+		appPopupTask
+	]
+
+	const hooks = ({ methods }) => ({
+		beforeOnInit() {
+			store.onUpdated(methods.togglePopup)
+		},
+		onDestroy () {
+			store.off(methods.togglePopup)
 		}
-	},
-   })
+	})
 
-  const children = () => [
-    appSearch,
-    appFilterStatus,
-    appTaskList,
-	appPopupTask
-  ]
+	const events = ({ on, queryOnce, queryAll, methods }) => ({
 
-  const hooks = ({ methods }) => ({
-    beforeOnInit () {
+	})
 
-    }
-  })
+	const methods = ({ publicMethods }) => ({
+		togglePopup(payload) {
+			publicMethods.togglePopupTask(payload)
+			publicMethods.togglePopupToEditTask(payload)
+		},
+		togglePopupTask(payload) {
+			if (!payload.event || payload.event !== 'togglePopupTask') return
+			state.set({ ...payload.taskPopup })
+		},
+		togglePopupToEditTask({ taskPopup }) {
+			const { popupOptions } = taskPopup
+			const { eventName, isVisible, data } = popupOptions
+			if (!eventName || eventName !== 'setIdTaskToEdit') return
+			state.set({ popupOptions: { ...state.popupOptions, data, isVisible } })
+		}
+	})
 
-  const events = ({on, queryOnce, queryAll, methods}) => ({ 
-	beforeOnInit () {
-		store.onUpdated((payload) => {
-			methods.togglePopupTask(payload)
-		})			
+	return {
+		state,
+		template,
+		styles,
+		events,
+		methods,
+		children,
+		hooks
 	}
-  })
-
-  const methods = () => ({
-	togglePopupTask (payload) { 
-		if(!payload.event || payload.event !== 'togglePopupTask') return 
-		state.set({ ...payload.taskPopup })
-	}
-   })
-
-  return {
-    state,
-    template,
-    styles,
-    events,
-    methods,
-    children,
-    hooks
-  }
 };

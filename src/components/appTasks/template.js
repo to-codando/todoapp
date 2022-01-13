@@ -24,7 +24,12 @@ export default ({ state, html }) => {
     </div>
 
 	${renderPopup(state.popupOptions.isVisible, html`
-		<app-popup-task></app-popup-task>
+		<app-popup-task
+			data-taskId="${state.popupOptions.data.id}"
+			data-projectId="${state.popupOptions.data.projectId}"
+			data-title="${state.popupOptions.data.title}"
+			data-description="${state.popupOptions.data.description}"
+		></app-popup-task>
 	`)}		
     `
 }

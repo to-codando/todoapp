@@ -38,10 +38,20 @@ export const appTaskList = () => {
 		onClickToShowTaskDetail () {
 			const taskHeader = queryAll('.task-header')
 			on('click', taskHeader, methods.showTaskDetail)
+		},
+		onClickToEditTask () {
+			const button = queryAll('.button-edit')
+			on('click', button, methods.setIdTaskToEdit)
 		}
 	})
 
 	const methods = ({ publicMethods }) => ({
+		setIdTaskToEdit({ target }){
+			const { selectedTaskId, projectId } = state.get()
+			const event = 'setIdTaskToEdit'
+			const data = { popupOptions: { isVisible: true }}
+			store.emit(event, { data, event, selectedTaskId, projectId })
+		},
 		showTaskDetail ({ target }) {
 			const taskItem = target.closest('.task-item')
 			const { taskId } = taskItem.dataset
