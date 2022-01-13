@@ -63,41 +63,46 @@ const updateTask = (state, payload) => {
 }
 
 const togglePopupProject = (state, payload) => {
-
-	const projectPopup = {
-		...payload.data
-	}
 	
 	return {
 		...state,
 		projectPopup: {
-			...state.projectPopup,
-			popupOptions: {
-				...state.projectPopup.popupOptions,
-				...projectPopup.popupOptions,
-				eventName: payload.event,
-				data: { taskId: '', projectId:'', title:'', description:' '}
-			}
-		},
-		event: payload.event
+			...payload
+		}
 	}
+
+
+	// const projectPopup = {
+	// 	...payload.data
+	// }
+	
+	// return {
+	// 	...state,
+	// 	projectPopup: {
+	// 		...state.projectPopup,
+	// 		popupOptions: {
+	// 			...state.projectPopup.popupOptions,
+	// 			...projectPopup.popupOptions,
+	// 			eventName: payload.event,
+	// 			data: { taskId: '', projectId:'', title:'', description:' '}
+	// 		}
+	// 	},
+	// 	event: payload.event
+	// }
 }
 
 const togglePopupTask = (state, payload) => {
-	const taskPopup = {
-		...payload.data
-	}
-	
+console.log('paylaod->', payload)
+
+
+	console.log(state)
 	return {
 		...state,
 		taskPopup: {
 			...state.taskPopup,
-			popupOptions: {
-				...state.taskPopup.popupOptions,
-				...taskPopup.popupOptions
-			}
+			...payload
 		},
-		event: payload.event
+
 	}
 }
 

@@ -30,6 +30,9 @@ export const appTaskList = () => {
 		beforeOnInit () {
 			methods.setProjectId()
 			methods.setProjectListById()
+		},
+		onDestroy () {
+			
 		}
 	})
 
@@ -47,10 +50,14 @@ export const appTaskList = () => {
 
 	const methods = ({ publicMethods }) => ({
 		setIdTaskToEdit({ target }){
-			const { selectedTaskId, projectId } = state.get()
-			const event = 'setIdTaskToEdit'
-			const data = { popupOptions: { isVisible: true }}
-			store.emit(event, { data, event, selectedTaskId, projectId })
+
+			const { selectedTaskId, projectId, project } = state.get()
+			const task = project.tasks.find( task => task.id === selectedTaskId)
+			const event = 'togglePopupTask'
+			const data = { ...task, projectId }
+			const popupOptions = {  isVisible: true, eventName: event, data	}
+
+			store.emit(event, { popupOptions })
 		},
 		showTaskDetail ({ target }) {
 			const taskItem = target.closest('.task-item')
@@ -58,8 +65,11 @@ export const appTaskList = () => {
 			state.set({ selectedTaskId: +taskId})
 		},
 		setProjectListById (){
+			const { routeParams } = routerObservable.get()
+			if(!routeParams || !routeParams.id) return
+
 			const { projects } = store.getState()
-			const { projectId } = state.get()
+			const projectId = +routeParams.id
 			const project = projects.find( project => project.id === projectId )
 			state.set({ project })
 		},

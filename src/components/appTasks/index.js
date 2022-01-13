@@ -14,7 +14,6 @@ export const appTasks = () => {
 	const state = observableFactory({
 		popupOptions: {
 			isVisible: false,
-			template: '',
 			eventName: '',
 			data: {
 				id: '',
@@ -34,7 +33,7 @@ export const appTasks = () => {
 
 	const hooks = ({ methods }) => ({
 		beforeOnInit() {
-			store.onUpdated(methods.togglePopup)
+			store.onUpdated(methods.togglePopupsTask)
 		},
 		onDestroy () {
 			store.off(methods.togglePopup)
@@ -46,19 +45,22 @@ export const appTasks = () => {
 	})
 
 	const methods = ({ publicMethods }) => ({
-		togglePopup(payload) {
+		togglePopupsTask(payload) {
 			publicMethods.togglePopupTask(payload)
 			publicMethods.togglePopupToEditTask(payload)
 		},
-		togglePopupTask(payload) {
-			if (!payload.event || payload.event !== 'togglePopupTask') return
-			state.set({ ...payload.taskPopup })
+		togglePopupTask({ taskPopup }) {
+			const { popupOptions } = taskPopup
+			const { eventName } = popupOptions
+			if(!eventName || eventName !== 'togglePopupTask') return
+			state.set({ ...taskPopup })
 		},
 		togglePopupToEditTask({ taskPopup }) {
-			const { popupOptions } = taskPopup
-			const { eventName, isVisible, data } = popupOptions
-			if (!eventName || eventName !== 'setIdTaskToEdit') return
-			state.set({ popupOptions: { ...state.popupOptions, data, isVisible } })
+			// const { popupOptions } = taskPopup
+			// const { eventName, isVisible, data } = popupOptions
+			// if (!eventName || eventName !== 'setIdTaskToEdit') return
+			// console.log(taskPopup)
+			// state.set({ popupOptions: { ...state.popupOptions, data, isVisible } })
 		}
 	})
 

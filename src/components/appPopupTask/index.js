@@ -72,9 +72,14 @@ const appPopupTask = (options) => {
 			state.set({ description: target.value })
 		},
 		hidePopupTask () {
+			const { routeParams } = routerObservable.get()
+			const { id } = routeParams
+
 			const event = 'togglePopupTask'
-			const data = { popupOptions: { isVisible: false }}
-			store.emit(event, { data, event })
+			const data = { id:'', title:'', description:'', projectId: +id }
+			const popupOptions = {  isVisible: false, eventName: event, data	}
+
+			store.emit(event, { popupOptions })
 		}
 	})
 

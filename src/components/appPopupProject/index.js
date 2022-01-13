@@ -49,8 +49,10 @@ const appPopupProject = (options) => {
 		},
 		hidePopupProject () {
 			const event = 'togglePopupProject'
-			const data = { popupOptions: {  isVisible: false } }
-			store.emit(event, { data, event })			
+			const data = { id:'', title:'', description:'', projectId:'' }
+			const popupOptions = {  isVisible: false, eventName: event, data	}
+
+			store.emit(event, { popupOptions })			
 		}
 	})
 

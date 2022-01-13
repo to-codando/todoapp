@@ -33,19 +33,30 @@ export const appHeader = (options) => {
 
 	const methods = ({ publicMethods }) => ({
 		showPopup() {
+			console.log(publicMethods.isPageProject())
 			publicMethods.isPageProject() ?
 				publicMethods.showPopupProject() :
 				publicMethods.showPopupTask()
 		},
 		showPopupTask () {
+			const { routeParams } = routerObservable.get()
+			const { id } = routeParams			
+
 			const event = 'togglePopupTask'
-			const data = { 	popupOptions: {  isVisible: true } }
-			store.emit(event, { data, event })
+			const task = { id: '', title:'', description:''}
+			const data = { ...task, projectId: +id }
+			const popupOptions = {  isVisible: true, eventName: event, data	}
+
+			store.emit(event, { popupOptions })
 		},
 		showPopupProject () {
+
 			const event = 'togglePopupProject'
-			const data = { 	popupOptions: {  isVisible: true } }
-			store.emit(event, { data, event })
+			const task = { projectId:'', id: '', title:'', description:''}
+			const data = { ...task }
+			const popupOptions = {  isVisible: true, eventName: event, data	}
+
+			store.emit(event, { popupOptions })
 		},
 		isPageProject () {
 			const {routeParams} = routerObservable.get()
