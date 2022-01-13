@@ -24,6 +24,10 @@ const appPopupProject = (options) => {
 			const button = queryOnce('#popup-save')
 			on('click', button, methods.createProject)
 		},
+		onClickToCancel () {
+			const button = queryOnce('#popup-cancel')
+			on('click', button, methods.hidePopupProject)
+		},
 		onTypTitle () {
 			const input = queryOnce('input')
 			const focusEnd = () => ['input', element]

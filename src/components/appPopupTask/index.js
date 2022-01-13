@@ -29,6 +29,10 @@ const appPopupTask = (options) => {
 			const button = queryOnce('#popup-save')
 			on('click', button, methods.createTask)
 		},
+		onClickToCancel (){
+			const button = queryOnce('#popup-cancel')
+			on('click', button, methods.hidePopupTask)
+		},
 		onTypeTitle () {
 			const input = queryOnce('input')
 			const focusEnd = () => ['input', element]
