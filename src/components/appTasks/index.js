@@ -8,33 +8,47 @@ import { appSearch } from '../appSearch'
 import { appFilterStatus } from '../appFilterStatus';
 import { appTaskList } from '../appTaskList';
 import { appPopupTask } from '../appPopupTask';
+import { appPopupRemove } from '../appPopupRemove';
 
 export const appTasks = () => {
 
 	const state = observableFactory({
-		popupOptions: {
-			isVisible: false,
-			template: '',
-			eventName: '',
-			data: {
-				id: '',
-				projectId: '',
-				title: '',
-				description: '',
-			}
+		taskPopup: {
+			popupOptions: {
+				isVisible: false,
+				eventName: '',
+				data: {
+					id: '',
+					projectId: '',
+					title: '',
+					description: '',
+				}
+			},			
 		},
+		removePopup: {
+			popupOptions: {
+				isVisible: false,
+				eventName: '',
+				data: {
+					id: '',
+					projectId: '',
+					title: '',
+				}
+			},			
+		}
 	})
 
 	const children = () => [
 		appSearch,
 		appFilterStatus,
 		appTaskList,
-		appPopupTask
+		appPopupTask,
+		appPopupRemove
 	]
 
 	const hooks = ({ methods }) => ({
 		beforeOnInit() {
-			store.onUpdated(methods.togglePopup)
+			store.onUpdated(methods.togglePopupsTask)
 		},
 		onDestroy () {
 			store.off(methods.togglePopup)
@@ -46,19 +60,22 @@ export const appTasks = () => {
 	})
 
 	const methods = ({ publicMethods }) => ({
-		togglePopup(payload) {
+		togglePopupsTask(payload) {
 			publicMethods.togglePopupTask(payload)
-			publicMethods.togglePopupToEditTask(payload)
+			publicMethods.togglePopupRemove(payload)
 		},
-		togglePopupTask(payload) {
-			if (!payload.event || payload.event !== 'togglePopupTask') return
-			state.set({ ...payload.taskPopup })
+		togglePopupRemove({ removePopup, taskPopup }){ 
+			const { popupOptions } = removePopup
+			const { eventName } = popupOptions
+			if(!eventName || eventName !== 'togglePopupRemove') return
+			// console.log(removePopup)
+			state.set({ removePopup })			
 		},
-		togglePopupToEditTask({ taskPopup }) {
+		togglePopupTask({ taskPopup }) {
 			const { popupOptions } = taskPopup
-			const { eventName, isVisible, data } = popupOptions
-			if (!eventName || eventName !== 'setIdTaskToEdit') return
-			state.set({ popupOptions: { ...state.popupOptions, data, isVisible } })
+			const { eventName } = popupOptions
+			if(!eventName || eventName !== 'togglePopupTask') return
+			state.set({ taskPopup })
 		}
 	})
 

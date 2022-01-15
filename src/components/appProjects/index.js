@@ -29,7 +29,7 @@ export const appProjects = () => {
 
 	const hooks = ({ methods }) => ({
 		beforeOnInit() {
-			store.onUpdated(methods.togglePopup)
+			store.onUpdated(methods.togglePopupsProject)
 		},
 		onDestroy() {
 			store.off(methods.togglePopup)
@@ -45,13 +45,15 @@ export const appProjects = () => {
 	const events = ({ on, queryOnce, queryAll, methods }) => ({})
 
 	const methods = ({ publicMethods }) => ({
-		togglePopup(payload) {
+		togglePopupsProject(payload) {
 			publicMethods.showProjectPopup(payload)
 			publicMethods.setProjectList(payload)
 		},
-		showProjectPopup(payload) {
-			if (!payload.event || payload.event !== 'togglePopupProject') return
-			state.set({ ...payload.projectPopup })
+		showProjectPopup({ projectPopup }) {
+			const { popupOptions } = projectPopup
+			const { eventName } = popupOptions
+			if (!eventName || eventName !== 'togglePopupProject') return
+			state.set({ ...state, popupOptions })
 		},
 		setProjectList(payload) {
 			if (!payload.event || payload.event !== 'createProject') return

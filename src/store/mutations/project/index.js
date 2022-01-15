@@ -20,6 +20,23 @@ const createTask = (state, payload) => {
 	return { ...state, projects: newProjectList }
 }
 
+const removeTask = (state, payload) => {
+	const { data: { id, projectId } } = payload
+
+	const otherProjects = state.projects.filter( project => project.id !== +projectId)
+	const project = state.projects.find( project => project.id === +projectId)
+	const tasks = project.tasks.filter(task => task.id !== +id)
+	project.tasks = [ ...tasks ]
+
+	const orderById = (a, b) => a.id - b.id
+	const projects = [ ...otherProjects, project ].sort(orderById)
+	
+	return { 
+		...state,
+		projects
+	 }
+}
+
 const setIdTaskToEdit = (state, payload) => {
 	const { data, event, selectedTaskId, projectId } = payload
 
@@ -63,49 +80,74 @@ const updateTask = (state, payload) => {
 }
 
 const togglePopupProject = (state, payload) => {
-
-	const projectPopup = {
-		...payload.data
-	}
 	
 	return {
 		...state,
 		projectPopup: {
-			...state.projectPopup,
-			popupOptions: {
-				...state.projectPopup.popupOptions,
-				...projectPopup.popupOptions,
-				eventName: payload.event,
-				data: { taskId: '', projectId:'', title:'', description:' '}
-			}
-		},
-		event: payload.event
+			...payload
+		}
 	}
 }
 
 const togglePopupTask = (state, payload) => {
-	const taskPopup = {
-		...payload.data
-	}
-	
 	return {
 		...state,
 		taskPopup: {
 			...state.taskPopup,
+			...payload
+		},
+
+	}
+}
+
+const togglePopupRemove = (state, payload) => {
+
+	const { popupOptions: { data: { projectId, taskId }}} = payload
+	const project = state?.projects.find( project => project.id === projectId)
+	const task = project?.tasks.find( task => task.id === taskId)
+
+	if(!project || !task) {
+		return {
+			...state,
+			removePopup: {
+				popupOptions: {
+					isVisible: false,
+					eventName: 'togglePopupRemove',
+					data: {
+						id:'',
+						projectId:'',
+						title:'',
+					}
+				},				
+			}
+		}
+	}
+
+	return {
+		...state,
+		removePopup: {
 			popupOptions: {
-				...state.taskPopup.popupOptions,
-				...taskPopup.popupOptions
+				...payload.popupOptions,
+				data: {
+					...payload.popupOptions.data,
+					projectId,
+					id: task.id,
+					title: task.title
+				}
 			}
 		},
-		event: payload.event
 	}
+
+	return { ...state }
 }
 
 export const projectMustations = {
 	createProject,
 	createTask,
 	updateTask,
+	removeTask,
 	togglePopupProject,
 	togglePopupTask,
+	togglePopupRemove,
 	setIdTaskToEdit
 }

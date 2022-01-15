@@ -30,6 +30,9 @@ export const appTaskList = () => {
 		beforeOnInit () {
 			methods.setProjectId()
 			methods.setProjectListById()
+		},
+		onDestroy () {
+			
 		}
 	})
 
@@ -42,15 +45,32 @@ export const appTaskList = () => {
 		onClickToEditTask () {
 			const button = queryAll('.button-edit')
 			on('click', button, methods.setIdTaskToEdit)
+		},
+		onClickToRemove () {
+			const button = queryAll('.button-remove')
+			on('click', button, methods.setTaskToRemove)
 		}
 	})
 
 	const methods = ({ publicMethods }) => ({
 		setIdTaskToEdit({ target }){
+
+			const { selectedTaskId, projectId, project } = state.get()
+			const task = project.tasks.find( task => task.id === selectedTaskId)
+			const event = 'togglePopupTask'
+			const data = { ...task, projectId }
+			const popupOptions = {  isVisible: true, eventName: event, data	}
+
+			store.emit(event, { popupOptions })
+		},
+		setTaskToRemove({ target }){
+
 			const { selectedTaskId, projectId } = state.get()
-			const event = 'setIdTaskToEdit'
-			const data = { popupOptions: { isVisible: true }}
-			store.emit(event, { data, event, selectedTaskId, projectId })
+			const event = 'togglePopupRemove'
+			const data = { taskId: selectedTaskId, projectId }
+			const popupOptions = {  isVisible: true, eventName: event, data	}
+
+			store.emit(event, { popupOptions })
 		},
 		showTaskDetail ({ target }) {
 			const taskItem = target.closest('.task-item')
@@ -58,8 +78,11 @@ export const appTaskList = () => {
 			state.set({ selectedTaskId: +taskId})
 		},
 		setProjectListById (){
+			const { routeParams } = routerObservable.get()
+			if(!routeParams || !routeParams.id) return
+
 			const { projects } = store.getState()
-			const { projectId } = state.get()
+			const projectId = +routeParams.id
 			const project = projects.find( project => project.id === projectId )
 			state.set({ project })
 		},

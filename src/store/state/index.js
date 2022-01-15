@@ -25,6 +25,18 @@ export const state = {
 		},
 	},
 
+	removePopup: {
+		popupOptions: {
+			isVisible: false,
+			eventName: '',
+			data: {
+				id:'',
+				projectId:'',
+				title:'',
+			}
+		},
+	},
+
 	projects: [
 		{id: 1, title: 'Primeiro Projeto', tasks: []},
 		{
