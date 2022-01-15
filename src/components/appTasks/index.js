@@ -47,20 +47,12 @@ export const appTasks = () => {
 	const methods = ({ publicMethods }) => ({
 		togglePopupsTask(payload) {
 			publicMethods.togglePopupTask(payload)
-			publicMethods.togglePopupToEditTask(payload)
 		},
 		togglePopupTask({ taskPopup }) {
 			const { popupOptions } = taskPopup
 			const { eventName } = popupOptions
 			if(!eventName || eventName !== 'togglePopupTask') return
 			state.set({ ...taskPopup })
-		},
-		togglePopupToEditTask({ taskPopup }) {
-			// const { popupOptions } = taskPopup
-			// const { eventName, isVisible, data } = popupOptions
-			// if (!eventName || eventName !== 'setIdTaskToEdit') return
-			// console.log(taskPopup)
-			// state.set({ popupOptions: { ...state.popupOptions, data, isVisible } })
 		}
 	})
 
