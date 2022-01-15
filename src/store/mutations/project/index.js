@@ -70,32 +70,9 @@ const togglePopupProject = (state, payload) => {
 			...payload
 		}
 	}
-
-
-	// const projectPopup = {
-	// 	...payload.data
-	// }
-	
-	// return {
-	// 	...state,
-	// 	projectPopup: {
-	// 		...state.projectPopup,
-	// 		popupOptions: {
-	// 			...state.projectPopup.popupOptions,
-	// 			...projectPopup.popupOptions,
-	// 			eventName: payload.event,
-	// 			data: { taskId: '', projectId:'', title:'', description:' '}
-	// 		}
-	// 	},
-	// 	event: payload.event
-	// }
 }
 
 const togglePopupTask = (state, payload) => {
-console.log('paylaod->', payload)
-
-
-	console.log(state)
 	return {
 		...state,
 		taskPopup: {

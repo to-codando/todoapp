@@ -33,7 +33,6 @@ export const appHeader = (options) => {
 
 	const methods = ({ publicMethods }) => ({
 		showPopup() {
-			console.log(publicMethods.isPageProject())
 			publicMethods.isPageProject() ?
 				publicMethods.showPopupProject() :
 				publicMethods.showPopupTask()
