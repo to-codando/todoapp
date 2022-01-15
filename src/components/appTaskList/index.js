@@ -45,6 +45,10 @@ export const appTaskList = () => {
 		onClickToEditTask () {
 			const button = queryAll('.button-edit')
 			on('click', button, methods.setIdTaskToEdit)
+		},
+		onClickToRemove () {
+			const button = queryAll('.button-remove')
+			on('click', button, methods.setTaskToRemove)
 		}
 	})
 
@@ -55,6 +59,15 @@ export const appTaskList = () => {
 			const task = project.tasks.find( task => task.id === selectedTaskId)
 			const event = 'togglePopupTask'
 			const data = { ...task, projectId }
+			const popupOptions = {  isVisible: true, eventName: event, data	}
+
+			store.emit(event, { popupOptions })
+		},
+		setTaskToRemove({ target }){
+
+			const { selectedTaskId, projectId } = state.get()
+			const event = 'togglePopupRemove'
+			const data = { taskId: selectedTaskId, projectId }
 			const popupOptions = {  isVisible: true, eventName: event, data	}
 
 			store.emit(event, { popupOptions })

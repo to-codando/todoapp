@@ -33,7 +33,6 @@ export const appTasks = () => {
 					id: '',
 					projectId: '',
 					title: '',
-					description: '',
 				}
 			},			
 		}
@@ -63,6 +62,14 @@ export const appTasks = () => {
 	const methods = ({ publicMethods }) => ({
 		togglePopupsTask(payload) {
 			publicMethods.togglePopupTask(payload)
+			publicMethods.togglePopupRemove(payload)
+		},
+		togglePopupRemove({ removePopup, taskPopup }){ 
+			const { popupOptions } = removePopup
+			const { eventName } = popupOptions
+			if(!eventName || eventName !== 'togglePopupRemove') return
+			// console.log(removePopup)
+			state.set({ removePopup })			
 		},
 		togglePopupTask({ taskPopup }) {
 			const { popupOptions } = taskPopup
