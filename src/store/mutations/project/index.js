@@ -12,7 +12,7 @@ const createTask = (state, payload) => {
 	const { projectId, title, description } = payload.data
 	const task = { id, title, description }
 	const otherProjects = state.projects.filter( project => project.id !== projectId )
-	const project = state.projects.find( project  => project.id === projectId)
+	const project = state.projects.find( project  => project.id === +projectId)
 
 	const sortById = (a, b) => a.id - b.id
 	project.tasks = [...project.tasks, task ]
@@ -62,20 +62,22 @@ const setIdTaskToEdit = (state, payload) => {
 }
 
 const updateTask = (state, payload) => {
+	const { projectId, taskId } = payload.data
 	
-	const { id: taskId, projectId, inputValue: title, textareaValue: description } = payload
-
+	const project = state.projects.find( project => project.id === +projectId)
 	const otherProjects = state.projects.filter( project => project.id !== +projectId)
-	const selectedProject = state.projects.find(  project => project.id === +projectId)
+	const otherTasks = project.tasks.filter( task => task.id !== +taskId)
+	
+	const orderById = (a, b) => a.id - b.id
+	const task = { ...payload.data, id: +taskId }
+	const tasks = [ ...otherTasks, task ].sort(orderById)
+	project.tasks = [ ...tasks ]
 
-	const otherTasks = selectedProject.tasks.filter( task => task.id !== +taskId)
-	const updatedTask = { id: +taskId, title, description }
-
-	selectedProject.tasks = [...otherTasks, updatedTask]
+	
 
 	 return {
-		 ...state,
-		 projects: [...otherProjects, selectedProject]
+		 ...state,	
+		   projects: [...otherProjects, project]
 	   }
 }
 

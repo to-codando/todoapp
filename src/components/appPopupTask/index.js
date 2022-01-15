@@ -29,7 +29,7 @@ const appPopupTask = (options) => {
 	const events = ({ on, queryOnce, methods }) => ({
 		onClickToSave() {
 			const button = queryOnce('#popup-save')
-			on('click', button, methods.createTask)
+			on('click', button, methods.saveTask)
 		},
 		onClickToCancel (){
 			const button = queryOnce('#popup-cancel')
@@ -55,10 +55,23 @@ const appPopupTask = (options) => {
 			const popupOptions = JSON.parse(JSON.stringify(element.dataset))
 			state.set({ ...popupOptions })
 		},
-		createTask (){
+		saveTask () {
+			const { taskId } = state.get()
+			if(!!taskId){
+				publicMethods.hidePopupTask()
+				return publicMethods.updateTask()
+			}
+			publicMethods.hidePopupTask()
+			publicMethods.createTask()
+		},
+		updateTask () {console.log('update')
+			const data = { ...state.get() }
+			const event = 'updateTask'
+			store.emit(event, { data, event })
+		},
+		createTask (){ 
 			const data = { ...state.get() }
 			const event = 'createTask'
-			publicMethods.hidePopupTask()
 			store.emit(event, { data, event })
 		},
 		setProjectId () {

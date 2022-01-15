@@ -33,8 +33,8 @@ export default ({ state, html }) => {
 
 	${renderPopup(state.taskPopup.popupOptions.isVisible, html`
 		<app-popup-task
-			data-taskId="${state.taskPopup.popupOptions.data.id}"
-			data-projectId="${state.taskPopup.popupOptions.data.projectId}"
+			data-task-id="${state.taskPopup.popupOptions.data.id}"
+			data-project-id="${state.taskPopup.popupOptions.data.projectId}"
 			data-title="${state.taskPopup.popupOptions.data.title}"
 			data-description="${state.taskPopup.popupOptions.data.description}"
 		></app-popup-task>
