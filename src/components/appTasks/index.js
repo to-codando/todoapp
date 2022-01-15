@@ -8,27 +8,43 @@ import { appSearch } from '../appSearch'
 import { appFilterStatus } from '../appFilterStatus';
 import { appTaskList } from '../appTaskList';
 import { appPopupTask } from '../appPopupTask';
+import { appPopupRemove } from '../appPopupRemove';
 
 export const appTasks = () => {
 
 	const state = observableFactory({
-		popupOptions: {
-			isVisible: false,
-			eventName: '',
-			data: {
-				id: '',
-				projectId: '',
-				title: '',
-				description: '',
-			}
+		taskPopup: {
+			popupOptions: {
+				isVisible: false,
+				eventName: '',
+				data: {
+					id: '',
+					projectId: '',
+					title: '',
+					description: '',
+				}
+			},			
 		},
+		removePopup: {
+			popupOptions: {
+				isVisible: false,
+				eventName: '',
+				data: {
+					id: '',
+					projectId: '',
+					title: '',
+					description: '',
+				}
+			},			
+		}
 	})
 
 	const children = () => [
 		appSearch,
 		appFilterStatus,
 		appTaskList,
-		appPopupTask
+		appPopupTask,
+		appPopupRemove
 	]
 
 	const hooks = ({ methods }) => ({
@@ -52,7 +68,7 @@ export const appTasks = () => {
 			const { popupOptions } = taskPopup
 			const { eventName } = popupOptions
 			if(!eventName || eventName !== 'togglePopupTask') return
-			state.set({ ...taskPopup })
+			state.set({ taskPopup })
 		}
 	})
 

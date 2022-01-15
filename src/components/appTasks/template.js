@@ -23,12 +23,21 @@ export default ({ state, html }) => {
        </div>
     </div>
 
-	${renderPopup(state.popupOptions.isVisible, html`
+	${renderPopup(state.removePopup.popupOptions.isVisible, html`
 		<app-popup-task
-			data-taskId="${state.popupOptions.data.id}"
-			data-projectId="${state.popupOptions.data.projectId}"
-			data-title="${state.popupOptions.data.title}"
-			data-description="${state.popupOptions.data.description}"
+			data-taskId="${state.removePopup.popupOptions.data.id}"
+			data-projectId="${state.removePopup.popupOptions.data.projectId}"
+			data-title="${state.removePopup.popupOptions.data.title}"
+			data-description="${state.removePopup.popupOptions.data.description}"
+		></app-popup-task>
+	`)}		
+
+	${renderPopup(state.taskPopup.popupOptions.isVisible, html`
+		<app-popup-task
+			data-taskId="${state.taskPopup.popupOptions.data.id}"
+			data-projectId="${state.taskPopup.popupOptions.data.projectId}"
+			data-title="${state.taskPopup.popupOptions.data.title}"
+			data-description="${state.taskPopup.popupOptions.data.description}"
 		></app-popup-task>
 	`)}		
     `
