@@ -1,6 +1,7 @@
 import { observableFactory, routerObservable } from 'lemejs';
 
 import { store } from '../../store';
+import { filterTaskObservable } from '../../services/filterObservable';
 
 import template from './template'
 import styles from './styles'
@@ -27,67 +28,91 @@ export const appTaskList = () => {
 	]
 
 	const hooks = ({ methods }) => ({
-		beforeOnInit () {
+		beforeOnInit() {
+			store.onUpdated(methods.setProjectList)
+			filterTaskObservable.on(methods.executeTaskFilter)
+
 			methods.setProjectId()
 			methods.setProjectListById()
-			store.onUpdated(methods.setProjectListById)
 		},
-		onDestroy () {
-			
+		onDestroy() {
+
 		}
 	})
 
 
-	const events = ({ on, queryAll, methods, props }) => ({ 
-		onClickToShowTaskDetail () {
+	const events = ({ on, queryAll, methods, props }) => ({
+		onClickToShowTaskDetail() {
 			const taskHeader = queryAll('.task-header')
 			on('click', taskHeader, methods.showTaskDetail)
 		},
-		onClickToEditTask () {
+		onClickToEditTask() {
 			const button = queryAll('.button-edit')
 			on('click', button, methods.setIdTaskToEdit)
 		},
-		onClickToRemove () {
+		onClickToRemove() {
 			const button = queryAll('.button-remove')
 			on('click', button, methods.setTaskToRemove)
 		}
 	})
 
 	const methods = ({ publicMethods }) => ({
-		setIdTaskToEdit({ target }){
+		executeTaskFilter(payload){
+			const { eventName, term, projectId } = payload
+			if(eventName === 'resetTaskList') return publicMethods.resetProjectList()
+			if(eventName === 'filterTaskList') return publicMethods.filterTasksByTerm({ term })
+		},
+		filterTasksByTerm(payload) {
+			const { project } = state.get()
+			const { tasks } = project
+			const { term } = payload
+			const newTaskList = tasks.find(taskItem => taskItem.title === term)
+			project.tasks = newTaskList
+			state.set({ project })
+		},
+		resetProjectList (){
+			const { routeParams: {id: projectId}} = routerObservable.get()
+			const { projects } = store.getState()
+			const project = projects.find( project => project.id === +projectId)
+			state.set({ project: Object.create(project)})
+		},
+		setProjectList(payload) {
+			publicMethods.setProjectListById()
+		},
+		setIdTaskToEdit({ target }) {
 
 			const { selectedTaskId, projectId, project } = state.get()
-			const task = project.tasks.find( task => task.id === selectedTaskId)
+			const task = project.tasks.find(task => task.id === selectedTaskId)
 			const event = 'togglePopupTask'
 			const data = { ...task, projectId }
-			const popupOptions = {  isVisible: true, eventName: event, data	}
+			const popupOptions = { isVisible: true, eventName: event, data }
 
 			store.emit(event, { popupOptions })
 		},
-		setTaskToRemove({ target }){
+		setTaskToRemove({ target }) {
 
 			const { selectedTaskId, projectId } = state.get()
 			const event = 'togglePopupRemove'
 			const data = { taskId: selectedTaskId, projectId }
-			const popupOptions = {  isVisible: true, eventName: event, data	}
+			const popupOptions = { isVisible: true, eventName: event, data }
 
 			store.emit(event, { popupOptions })
 		},
-		showTaskDetail ({ target }) {
+		showTaskDetail({ target }) {
 			const taskItem = target.closest('.task-item')
 			const { taskId } = taskItem.dataset
-			state.set({ selectedTaskId: +taskId})
+			state.set({ selectedTaskId: +taskId })
 		},
-		setProjectListById (){
+		setProjectListById() {
 			const { routeParams } = routerObservable.get()
-			if(!routeParams || !routeParams.id) return
+			if (!routeParams || !routeParams.id) return
 
 			const { projects } = store.getState()
 			const projectId = +routeParams.id
-			const project = projects.find( project => project.id === projectId )
-			state.set({ project })
+			const project = projects.find(project => project.id === projectId)
+			state.set({ project: Object.create(project) })
 		},
-		setProjectId () {
+		setProjectId() {
 			const { routeParams } = routerObservable.get()
 			state.set({ projectId: +routeParams.id })
 		}

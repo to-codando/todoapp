@@ -158,5 +158,5 @@ export const projectMustations = {
 	togglePopupProject,
 	togglePopupTask,
 	togglePopupRemove,
-	setIdTaskToEdit
+	setIdTaskToEdit,
 }

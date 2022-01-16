@@ -7,7 +7,7 @@ export default ({ state, html }) => {
 
     return html`
         <div>
-            ${state.selectedStatus.label || 'Selecione um valor '} 
+            ${state?.selectedStatus?.label || 'Selecione um valor '} 
              <span class="material-icons">
                 expand_more
              </span>                

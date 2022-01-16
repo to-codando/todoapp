@@ -1,7 +1,12 @@
 
 export default ({ state, html }) => {
 
+	if(!state.project.tasks || !state.project.tasks.length) return html`
+		<h3>Nenhuma tarefa encontrata</h3>
+	`
+
 	const setCssClassByStatus = (task) => {
+		if(!task || !task.statusId) return ''
 		const statusId = +task.statusId
 		if(statusId === 1) return 'status-todo'
 		if(statusId === 2) return 'status-doing'
@@ -24,19 +29,19 @@ export default ({ state, html }) => {
 
         ${state.project.tasks.map( task => {
             return html`
-            <div class="task-item" data-task-id="${task.id}">
+            <div class="task-item" data-task-id="${task?.id}">
                 <div class="task-header">
                     <div class="task-id">
-					 <span class="status ${setCssClassByStatus(task)}"></span> #${task.id}
+					 <span class="status ${setCssClassByStatus(task)}"></span> #${task?.id}
 					</div>
-                    <div class="task-title">${task.title}</div>
+                    <div class="task-title">${task?.title}</div>
                     <div class="task-icon">
                         <span class="material-icons">
                         expand_more
                         </span>                
                     </div>                
                 </div>
-                <div class="task-content ${state.selectedTaskId !== +task.id ? 'hide-content' : ''}">
+                <div class="task-content ${state.selectedTaskId !== +task?.id ? 'hide-content' : ''}">
                     <div class="task-controller">
                         <div>
                             <button class="button button-edit">Editar</button>
@@ -44,13 +49,13 @@ export default ({ state, html }) => {
                         </div>
                         <div>
                             <app-combo
-								data-status-id="${task.statusId}"
-								data-task-id="${task.id}"
-								data-project-id="${state.projectId}"
+								data-status-id="${task?.statusId}"
+								data-task-id="${task?.id}"
+								data-project-id="${state?.projectId}"
 							></app-combo>
                         </div>
                     </div>
-                    <p> ${task.description}</p>
+                    <p> ${task?.description}</p>
                 </div>
             </div>            
             `

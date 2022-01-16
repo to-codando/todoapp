@@ -35,4 +35,14 @@ export default ({ ctx, css }) => css`
             background: #40CAD2;
             color: #fff
         }
+
+		${ctx}  button + button {
+			border-color: #ff7a87;
+			color: #ff7a87
+		}
+
+		${ctx}  button + button:hover {
+			border-color: #ff166e;
+			background: #ff166e;
+		}
     `
