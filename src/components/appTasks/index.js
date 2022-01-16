@@ -68,7 +68,6 @@ export const appTasks = () => {
 			const { popupOptions } = removePopup
 			const { eventName } = popupOptions
 			if(!eventName || eventName !== 'togglePopupRemove') return
-			// console.log(removePopup)
 			state.set({ removePopup })			
 		},
 		togglePopupTask({ taskPopup }) {

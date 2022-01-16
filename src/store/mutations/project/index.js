@@ -64,13 +64,14 @@ const setIdTaskToEdit = (state, payload) => {
 
 const updateTask = (state, payload) => {
 	const { projectId, taskId, statusId } = payload.data
-	
 	const projects = Array.from(state.projects)
 	const project = projects.find( project => project.id === +projectId)
-	const taskUpdated = { ...payload.data, id: +taskId, statusId: +statusId }
+	const task = project.tasks.find( task => task.id === +taskId)
+	const taskToUpdate = {...task, ...payload.data, id: +taskId, statusId: +statusId }
+	const updatedTask = { id: taskToUpdate.id, statusId: taskToUpdate.statusId, title: taskToUpdate.title, description: taskToUpdate.description }
 
 	const updateTask = (taskItem) => {
-		if(taskItem.id === +taskId) return taskUpdated
+		if(taskItem.id === +taskId) return updatedTask
 		return taskItem
 	}
 

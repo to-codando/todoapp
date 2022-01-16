@@ -45,6 +45,8 @@ export default ({ state, html }) => {
                         <div>
                             <app-combo
 								data-status-id="${task.statusId}"
+								data-task-id="${task.id}"
+								data-project-id="${state.projectId}"
 							></app-combo>
                         </div>
                     </div>

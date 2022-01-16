@@ -30,6 +30,7 @@ export const appTaskList = () => {
 		beforeOnInit () {
 			methods.setProjectId()
 			methods.setProjectListById()
+			store.onUpdated(methods.setProjectListById)
 		},
 		onDestroy () {
 			
