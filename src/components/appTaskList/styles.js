@@ -39,6 +39,7 @@ export default ({ ctx, css }) => css`
         width:100%;
         height: 4rem;
         border-bottom: 1px #ccc solid;
+		position:relative;
     }
 
     ${ctx} .task-id {
@@ -132,5 +133,26 @@ export default ({ ctx, css }) => css`
         font-weight: normal;
         line-height: 1.2rem
     }
+
+	${ctx} .status {
+		display:block;
+		position: absolute;
+		top:0;
+		left:0;
+		bottom:0;
+		width:5px;
+	}
+
+	${ctx} .status-todo {
+		background:#f4abca
+	}
+
+	${ctx} .status-doing {
+		background:#8bf6cd
+	}
+	
+	${ctx} .status-done {
+		background:#82e4f8;
+	}	
 
 `

@@ -1,6 +1,13 @@
 
 export default ({ state, html }) => {
 
+	const setCssClassByStatus = (task) => {
+		const statusId = +task.statusId
+		if(statusId === 1) return 'status-todo'
+		if(statusId === 2) return 'status-doing'
+		if(statusId === 3) return 'status-done'
+	}
+
     if(!state.project.tasks.length) return html`
     <div class="content">
         <app-note
@@ -19,7 +26,9 @@ export default ({ state, html }) => {
             return html`
             <div class="task-item" data-task-id="${task.id}">
                 <div class="task-header">
-                    <div class="task-id">#${task.id}</div>
+                    <div class="task-id">
+					 <span class="status ${setCssClassByStatus(task)}"></span> #${task.id}
+					</div>
                     <div class="task-title">${task.title}</div>
                     <div class="task-icon">
                         <span class="material-icons">
@@ -34,7 +43,9 @@ export default ({ state, html }) => {
                             <button class="button button-remove">Remover</button>
                         </div>
                         <div>
-                            <app-combo></app-combo>
+                            <app-combo
+								data-status-id="${task.statusId}"
+							></app-combo>
                         </div>
                     </div>
                     <p> ${task.description}</p>
