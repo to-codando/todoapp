@@ -15,6 +15,7 @@ const appPopupTask = (options) => {
 		description:'',
 		projectId:'',
 		taskId:'',
+		statusId:''
 	})
 
 	const children = () => []
@@ -64,7 +65,7 @@ const appPopupTask = (options) => {
 			publicMethods.hidePopupTask()
 			publicMethods.createTask()
 		},
-		updateTask () {console.log('update')
+		updateTask () {
 			const data = { ...state.get() }
 			const event = 'updateTask'
 			store.emit(event, { data, event })

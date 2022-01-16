@@ -35,7 +35,8 @@ export default ({ ctx, css }) => css`
         box-shadow: 3px 3px 15px rgba(0, 0, 0, .2);
         display: none;
         position: absolute;
-        top: 3rem
+        top: 3rem;
+		z-index:2000
     }
 
     ${ctx}:hover ul {
