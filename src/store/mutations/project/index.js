@@ -64,20 +64,25 @@ const setIdTaskToEdit = (state, payload) => {
 const updateTask = (state, payload) => {
 	const { projectId, taskId } = payload.data
 	
-	const project = state.projects.find( project => project.id === +projectId)
-	const otherProjects = state.projects.filter( project => project.id !== +projectId)
-	const otherTasks = project.tasks.filter( task => task.id !== +taskId)
-	
-	const orderById = (a, b) => a.id - b.id
-	const task = { ...payload.data, id: +taskId }
-	const tasks = [ ...otherTasks, task ].sort(orderById)
-	project.tasks = [ ...tasks ]
+	const projects = Array.from(state.projects)
+	const project = projects.find( project => project.id === +projectId)
+	const taskUpdated = { ...payload.data, id: +taskId }
 
-	
+	const updateTask = (taskItem) => {
+		if(taskItem.id === +taskId) return taskUpdated
+		return taskItem
+	}
+
+	const updateProject = (projectItem) => {
+		if(projectItem.id === +projectId) return project
+		return projectItem
+	}
+
+	project.tasks = Array.from(project.tasks, updateTask)
 
 	 return {
 		 ...state,	
-		   projects: [...otherProjects, project]
+		   projects: Array.from(projects, updateProject)
 	   }
 }
 
